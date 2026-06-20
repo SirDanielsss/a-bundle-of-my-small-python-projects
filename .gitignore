@@ -1,0 +1,17 @@
+# Файлы Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# Виртуальное окружение
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Системные файлы
+.DS_Store
+Thumbs.db
