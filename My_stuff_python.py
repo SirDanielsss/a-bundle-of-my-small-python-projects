@@ -28,17 +28,23 @@ def main():
 
         print(art)    
         
+        things = {
+            "1": "FizzBuzz",
+            "2": "Guess the number",
+            "3": "Multiplication table",
+            "4": "Password generator",
+            "5": "Password history",
+            "0": "Exit"
+        }
 
-        print("1 - FizzBuzz")
-        print("2 - Guess the number")
-        print("3 - Multiplication table")
-        print("4 - Password generator")
-        print("0 - Exit")
+        for thing in things:
+            print(thing, things[thing], sep = " - ")
 
-        k = get_int("\nYour choice: ", 0, 4)
+
+        k = get_int("\nYour choice: ", 0, len(things)-1)
 
         if k == 0:
-            print("Goodbye then!")
+            print("\nGoodbye then!")
             sys.exit()
         elif k == 1:
             clear_terminal()
@@ -52,6 +58,9 @@ def main():
         elif k == 4:
             clear_terminal()
             Password_generator()
+        elif k == 5:
+            clear_terminal()
+            Password_history()
         else:
             show_error()
 
@@ -141,31 +150,57 @@ def Password_generator():
     secrets.SystemRandom().shuffle(password)
 
     password = ''.join(password)
-    prefix = "Your last generated password is: "
-
-    with open("Passwords.txt", 'r+') as file:
-        lines = file.readlines()
-
-        cleaned_lines = []
-        for line in lines:
-            if line.startswith(prefix):
-                cleaned_lines.append(line[len(prefix):])
-            else:
-                cleaned_lines.append(line)
-
-        cleaned_lines.append(f"{prefix}{password}\n")
-
-    with open("Passwords.txt", 'w') as file:
-        file.writelines(cleaned_lines)
-
-        
-
+    
+    save_password(password)
 
     print(f"\nYour new password is: {password}, \n\nWrote in the Passwords.txt file :)")
 
     input("\nPress ENTER to continue")
 
     return
+
+def Password_history():
+    try:
+        with open("Passwords.txt", "r") as file:
+            content = file.read()
+            if content.strip():
+                print("=== Your passwords ===")
+                print(content)
+
+                print("1 - delete history")
+                print("0 - exit\n")
+
+            choice = get_int("Your choice: ", 0, 1)
+
+            if choice == 0:
+                return
+
+            elif choice == 1:
+                delete_password_history()
+
+            else:
+                print("You don't have any generated passwords yet")
+                
+    except FileNotFoundError:
+        print("You don't have any generated passwords yet")
+
+    input("Press ENTER to continue")
+
+    
+
+def save_password(password):
+    from datetime import datetime
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open("Passwords.txt", 'a') as file:
+        file.write(f"[{timestamp}] {password}\n")
+
+def delete_password_history():
+
+    file_path = "Passwords.txt"
+    os.remove(file_path)
+    print(f"File {file_path} has been deleted")
 
 def clear_terminal():
     if os.name == 'nt':
@@ -184,16 +219,17 @@ def get_int(prompt, min_value=None, max_value=None):
             num = int(input(prompt))
 
             if min_value is not None and num < min_value:  # ← проверяем min_value, а не num
-                print(f"Number must be >= {min_value}!\n")
-                continue
+                print(f"\nNumber must be >= {min_value}!")
+                return
 
             if max_value is not None and num > max_value:  # ← проверяем max_value, а не num
-                print(f"Number must be <= {max_value}!\n")
-                continue
+                print(f"\nNumber must be <= {max_value}!")
+                return
 
             return num
 
         except ValueError:
-            print("Enter a NUMBER, dumbass\n")
+            print("\nEnter a NUMBER, ")
+            return
 
 main()
