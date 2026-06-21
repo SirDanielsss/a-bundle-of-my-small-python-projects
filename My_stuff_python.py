@@ -40,7 +40,7 @@ def main():
         }
 
         for thing in things:
-            print(thing, things[thing], sep = " - ")
+            print(thing, things[thing], sep=" - ")
 
 
         k = get_int("\nYour choice: ", 0, len(things)-1)
@@ -50,23 +50,23 @@ def main():
             sys.exit()
         elif k == 1:
             clear_terminal()
-            FizzBuzz()
+            fizz_buzz()
         elif k == 2:
             clear_terminal()
-            Guess_the_number()
+            guess_the_number()
         elif k == 3:
             clear_terminal()
-            Multiplication_table()
+            multiplication_table()
         elif k == 4:
             clear_terminal()
-            Password_generator()
+            password_generator()
         elif k == 5:
             clear_terminal()
-            Password_history()
+            password_history()
         else:
             show_error()
 
-def FizzBuzz():
+def fizz_buzz():
 
     for i in range(1,101):
         if (i % 3 == 0 and i % 5 == 0):
@@ -82,7 +82,7 @@ def FizzBuzz():
 
     return
 
-def Guess_the_number():
+def guess_the_number():
 
     number = randint(1, 100)
     attempts = 1
@@ -110,7 +110,7 @@ def Guess_the_number():
 
     return
 
-def Multiplication_table():
+def multiplication_table():
 
     n = get_int("Choose a size of the table: ", min_value=1)
 
@@ -128,13 +128,13 @@ def Multiplication_table():
 
     return
 
-def Password_generator():
+def password_generator():
 
     uppercase = string.ascii_uppercase
     lowercase = string.ascii_lowercase
     digits = string.digits
-    special="!@#$%^&*()_-+=[]{}"
-    alphabet = uppercase + lowercase + digits + special
+    special=r"!@#$%^&*()_-+=[]{}"
+    all_chars = uppercase + lowercase + digits + special
 
     length = get_int("How long should your password be (min = 4): ", min_value=4)
 
@@ -144,8 +144,7 @@ def Password_generator():
         secrets.choice(digits),
         secrets.choice(special)
     ]
-
-    all_chars = uppercase + lowercase + digits + special
+    
     for _ in range(length - 4):
         password.append(secrets.choice(all_chars))
 
@@ -161,34 +160,32 @@ def Password_generator():
 
     return
 
-def Password_history():
+def password_history():
     try:
         with open("Passwords.txt", "r") as file:
             content = file.read()
             if content.strip():
                 print("=== Your passwords ===")
                 print(content)
-
                 print("1 - delete history")
                 print("0 - exit\n")
-
-            choice = get_int("Your choice: ", 0, 1)
-
-            if choice == 0:
-                return
-
-            elif choice == 1:
-                delete_password_history()
-
+                
+                choice = get_int("Your choice: ", 0, 1)
+                
+                if choice == 0:
+                    return
+                elif choice == 1:
+                    delete_password_history()
             else:
                 print("You don't have any generated passwords yet\n")
-
+                
     except FileNotFoundError:
         print("You don't have any generated passwords yet\n")
-
-    input("Press ENTER to continue")
-
     
+    input("Press ENTER to continue")   
+
+
+
 
 def save_password(password):
 
@@ -201,8 +198,11 @@ def save_password(password):
 def delete_password_history():
 
     file_path = "Passwords.txt"
-    os.remove(file_path)
-    print(f"File {file_path} has been deleted\n")
+    try:
+        os.remove(file_path)
+        print(f"File {file_path} has been deleted\n")
+    except FileNotFoundError:
+        print(f"File {file_path} already doesn't exist\n")
 
 def clear_terminal():
     if os.name == 'nt':
