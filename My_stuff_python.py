@@ -140,7 +140,28 @@ def Password_generator():
 
     secrets.SystemRandom().shuffle(password)
 
-    print(f"\nYour new password is: {''.join(password)}, \n\nDon't forget it :)")
+    password = ''.join(password)
+    prefix = "Your last generated password is: "
+
+    with open("Passwords.txt", 'r+') as file:
+        lines = file.readlines()
+
+        cleaned_lines = []
+        for line in lines:
+            if line.startswith(prefix):
+                cleaned_lines.append(line[len(prefix):])
+            else:
+                cleaned_lines.append(line)
+
+        cleaned_lines.append(f"{prefix}{password}\n")
+
+    with open("Passwords.txt", 'w') as file:
+        file.writelines(cleaned_lines)
+
+        
+
+
+    print(f"\nYour new password is: {password}, \n\nWrote in the Passwords.txt file :)")
 
     input("\nPress ENTER to continue")
 
