@@ -1,9 +1,11 @@
-import secrets
-from random import randint
 import sys
 import os
+
 import secrets
 import string
+
+from datetime import datetime
+from random import randint
 
 
 def main():
@@ -88,7 +90,7 @@ def Guess_the_number():
     print("Guess a number between 1 and 100")
 
     while True:
-        guess = get_int("Your guess: ")         #Didn't use max and min number in get_int() because why not
+        guess = get_int("Your guess: ")
 
         if guess < number:
             print("higher")
@@ -110,7 +112,7 @@ def Guess_the_number():
 
 def Multiplication_table():
 
-    n = get_int("Choose a size of the table: ", min_value=1)         #Didn't use max and min number in get_int() because why should I restrict user?
+    n = get_int("Choose a size of the table: ", min_value=1)
 
     max_n = n*n
 
@@ -134,7 +136,7 @@ def Password_generator():
     special="!@#$%^&*()_-+=[]{}"
     alphabet = uppercase + lowercase + digits + special
 
-    lenghth = get_int("How long should your password be (min = 4): ", min_value=4)
+    length = get_int("How long should your password be (min = 4): ", min_value=4)
 
     password = [
         secrets.choice(uppercase),
@@ -144,7 +146,7 @@ def Password_generator():
     ]
 
     all_chars = uppercase + lowercase + digits + special
-    for _ in range(lenghth - 4):
+    for _ in range(length - 4):
         password.append(secrets.choice(all_chars))
 
     secrets.SystemRandom().shuffle(password)
@@ -153,7 +155,7 @@ def Password_generator():
     
     save_password(password)
 
-    print(f"\nYour new password is: {password}, \n\nWrote in the Passwords.txt file :)")
+    print(f"\nYour new password is: {password}\n\nWrote in the Passwords.txt file :)")
 
     input("\nPress ENTER to continue")
 
@@ -179,17 +181,17 @@ def Password_history():
                 delete_password_history()
 
             else:
-                print("You don't have any generated passwords yet")
-                
+                print("You don't have any generated passwords yet\n")
+
     except FileNotFoundError:
-        print("You don't have any generated passwords yet")
+        print("You don't have any generated passwords yet\n")
 
     input("Press ENTER to continue")
 
     
 
 def save_password(password):
-    from datetime import datetime
+
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -200,7 +202,7 @@ def delete_password_history():
 
     file_path = "Passwords.txt"
     os.remove(file_path)
-    print(f"File {file_path} has been deleted")
+    print(f"File {file_path} has been deleted\n")
 
 def clear_terminal():
     if os.name == 'nt':
@@ -218,18 +220,18 @@ def get_int(prompt, min_value=None, max_value=None):
         try:
             num = int(input(prompt))
 
-            if min_value is not None and num < min_value:  # ← проверяем min_value, а не num
+            if min_value is not None and num < min_value:
                 print(f"\nNumber must be >= {min_value}!")
-                return
+                continue
 
-            if max_value is not None and num > max_value:  # ← проверяем max_value, а не num
+            if max_value is not None and num > max_value:
                 print(f"\nNumber must be <= {max_value}!")
-                return
+                continue
 
             return num
 
         except ValueError:
-            print("\nEnter a NUMBER, ")
-            return
+            print("\nEnter a NUMBER")
+            continue
 
 main()
