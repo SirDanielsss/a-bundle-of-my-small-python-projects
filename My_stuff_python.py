@@ -80,8 +80,6 @@ def fizz_buzz():
 
     input("\nPress ENTER to continue")
 
-    return
-
 def guess_the_number():
 
     number = randint(1, 100)
@@ -211,7 +209,7 @@ def clear_terminal():
         os.system('clear')
 
 def show_error():
-    print("Wrong choise, try again")
+    print("Wrong choiсe, try again")
     input("\nPress ENTER to continue")
     return
 
