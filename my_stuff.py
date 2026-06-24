@@ -208,7 +208,6 @@ def password_history():
     if not passwords:
         print("You don't have any generated passwords yet\n")
     else:
-        print("=== Your passwords ===")
         for pwd in passwords:
             print(pwd)
         print()
